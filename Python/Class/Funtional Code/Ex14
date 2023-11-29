@@ -1,0 +1,58 @@
+from os import system
+import pygame
+from pygame.locals import *
+
+# Dimensiones de la ventana del juego
+ANCHO_VENTANA = 800
+ALTO_VENTANA = 600
+
+# Colores
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+AZUL = (0, 0, 255)
+
+# Dimensiones de la paleta y la pelota
+ANCHO_PALETA = 100
+ALTO_PALETA = 20
+ANCHO_PELOTA = 20
+ALTO_PELOTA = 20
+
+def main():
+    pygame.init()
+    ventana = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
+    pygame.display.set_caption("Arkanoid")
+    reloj = pygame.time.Clock()
+
+    paleta = pygame.Rect((ANCHO_VENTANA - ANCHO_PALETA) // 2, ALTO_VENTANA - ALTO_PALETA - 10, ANCHO_PALETA, ALTO_PALETA)
+    pelota = pygame.Rect(ANCHO_VENTANA // 2 - ANCHO_PELOTA // 2, ALTO_VENTANA // 2 - ALTO_PELOTA // 2, ANCHO_PELOTA, ALTO_PELOTA)
+    pelota_dx = 5
+    pelota_dy = -5
+
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == QUIT:
+                pygame.quit()
+                return
+
+        teclas = pygame.key.get_pressed()
+        if teclas[K_LEFT] and paleta.left > 0:
+            paleta.left -= 5
+        if teclas[K_RIGHT] and paleta.right < ANCHO_VENTANA:
+            paleta.right += 5
+
+        pelota.left += pelota_dx
+        pelota.top += pelota_dy
+
+        if pelota.left < 0 or pelota.right > ANCHO_VENTANA:
+            pelota_dx *= -1
+        if pelota.top < 0 or pelota.colliderect(paleta):
+            pelota_dy *= -1
+
+        ventana.fill(NEGRO)
+        pygame.draw.rect(ventana, BLANCO, paleta)
+        pygame.draw.ellipse(ventana, AZUL, pelota)
+        pygame.display.flip()
+        reloj.tick(60)
+
+if __name__ == "__main__":
+    main()

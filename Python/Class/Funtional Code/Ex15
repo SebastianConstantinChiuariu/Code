@@ -1,0 +1,65 @@
+import socket
+import threading
+
+# Configuración del servidor
+HOST = '127.0.0.1'  # Dirección IP del servidor
+PUERTO = 55555  # Puerto del servidor
+
+# Inicialización del socket del servidor
+servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+servidor.bind((HOST, PUERTO))
+servidor.listen()
+
+# Lista de clientes conectados
+clientes = []
+nombres_clientes = []
+
+
+# Función para transmitir mensajes a todos los clientes conectados
+def transmitir_mensaje(mensaje, remitente):
+    for cliente in clientes:
+        cliente.send(f'{remitente}: {mensaje}'.encode('utf-8'))
+
+
+# Función para manejar las conexiones de los clientes
+def manejar_conexion(cliente):
+    while True:
+        try:
+            mensaje = cliente.recv(1024).decode('utf-8')
+            transmitir_mensaje(mensaje, nombres_clientes[clientes.index(cliente)])
+        except:
+            index = clientes.index(cliente)
+            clientes.remove(cliente)
+            cliente.close()
+            nombre = nombres_clientes[index]
+            nombres_clientes.remove(nombre)
+            transmitir_mensaje(f'{nombre} se ha desconectado.', 'Servidor')
+            break
+
+
+# Función para iniciar el servidor y aceptar conexiones de clientes
+def iniciar_servidor():
+    while True:
+        cliente, direccion = servidor.accept()
+        print(f'Conectado a {direccion[0]}:{direccion[1]}')
+
+        cliente.send('NOMBRE'.encode('utf-8'))
+        nombre = cliente.recv(1024).decode('utf-8')
+        nombres_clientes.append(nombre)
+        clientes.append(cliente)
+
+        transmitir_mensaje(f'{nombre} se ha unido al chat!', 'Servidor')
+        cliente.send('Conectado al servidor!'.encode('utf-8'))
+
+        cliente_thread = threading.Thread(target=manejar_conexion, args=(cliente,))
+        cliente_thread.start()
+
+
+# Función principal para ejecutar el servidor
+def main():
+    print('El servidor está activo y esperando conexiones...')
+    iniciar_servidor()
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,18 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 80px 200px auto ; /*Quantity of columns that exist in a container*/
+    gap: 10px;
+    background:linear-gradient(gold,grey);
+    border: 2px solid black;
+    padding: 10px;
+    row-gap: 20px; /*The space between rows in a container*/
+    column-gap: 25px; /*Space between columns in a container*/
+    grid-template-rows: auto auto auto 200px; /*Defines the height of a row*/
+}
+  
+  .grid-container > div {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+    text-align: center;
+    font-size: 30px;
+}
