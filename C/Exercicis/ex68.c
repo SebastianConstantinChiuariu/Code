@@ -13,7 +13,7 @@ main(){
 	int barras[5];
 	intent=0;
 	aleatorio(random);
-	printf("%d",random);	
+	printf("%d",random);
 	printbarras(barras);
 
 	do{
@@ -34,26 +34,31 @@ main(){
 }
 
 
-int aleatorio (int numaleatorio[5]){
-	int a,b,c,hi_es,generats=0;
+int aleatorio (int numaleatorio){
+	int denegado=0,salir=0,numa[5],numb[5],a,b,c;
 	srand(time(NULL));
 	do{
-		for(c=0;c<4;c++){
-			hi_es=0;
-			numaleatorio[c]=rand()%10;
-			generats++;
+		denegado=0;
+		do{
 			for(a=0;a<4;a++){
-				for(b=0;b<4;b++){
-					if(a!=b && numaleatorio[a]==numaleatorio[b]){
-						hi_es=1;
+				numaleatorio=rand()%10;
+				numa[a]=numaleatorio;
+				numb[a]=numaleatorio;			
+			}
+			for(b=0;b<4;b++){
+				for(c=0;c<4;c++){
+					if(b!=c && numa[b]==numb[c]){
+						denegado=1;
+					}
+					else{
+						continue;
 					}
 				}
 			}
-			if(hi_es==1){
-				c=0;
-			}
-		}
-	}while(generats==4);
+			salir=1;
+		}while(denegado==0);
+	}while(salir==0);
+	return numaleatorio;
 }
 
 int printbarras(int cantidadbarras[5]){
