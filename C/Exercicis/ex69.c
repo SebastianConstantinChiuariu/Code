@@ -1,12 +1,17 @@
 #include <stdio.h>
-
-FILE *fitxer;
+FILE *filecd;
 int numero;
-
+char cadena[50];
 main(){
-    printf("Insereix un nombre: ");
-    fscanf(fitxer,"%d", &numero);
-    if((fitxer=open("/home/cicles/fitxer","r"))==NULL){
-        printf("ERROR: El archivo no se puede abrir");
+    if((filecd=fopen("/home/cicles/filecd","w"))==NULL){
+        printf("El fitxer no s'ha pogit obrir");
     }
+    else{
+        scanf("%d",&numero);
+        printf("Texte: ");
+        fflush(stdin);
+        fgets(cadena,sizeof(cadena),stdin);
+        fprintf(filecd,"Numeros: %d",numero);
+        fprintf(filecd,"Text: %s",cadena);
+    }   
 }
