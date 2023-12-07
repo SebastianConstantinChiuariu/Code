@@ -12,3 +12,4 @@ main(){
         scanf("%d",&numero);
         fprintf(fitxer,"Numero: %d",numero);
     }
+}

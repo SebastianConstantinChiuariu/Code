@@ -1,17 +1,17 @@
 #include <stdio.h>
-FILE *filecd;
+FILE *file;
 int numero;
-char cadena[50];
+char cadena[200];
 main(){
-    if((filecd=fopen("/home/cicles/filecd","w"))==NULL){
+    if((file=fopen("filecd","w"))==NULL){
         printf("El fitxer no s'ha pogit obrir");
     }
     else{
         scanf("%d",&numero);
-        printf("Texte: ");
         fflush(stdin);
         fgets(cadena,sizeof(cadena),stdin);
-        fprintf(filecd,"Numeros: %d",numero);
-        fprintf(filecd,"Text: %s",cadena);
+        fprintf(filecd,"%d",numero);
+        fprintf(filecd,"%s",cadena);
+        fclose(filecd);
     }   
 }
